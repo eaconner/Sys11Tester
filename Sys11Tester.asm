@@ -1,7 +1,7 @@
 ;-----------------------;
 ;	Williams System 11	;
 ;	6821 PIA Tester		;
-;	Version 1.00		;
+;	Version 1.10		;
 ;	2019 Eric Conner	;
 ;	EricConner.net		;
 ;-----------------------;
@@ -33,179 +33,146 @@ widgetIO:		.EQU	$3402
 widgetIO_C:		.EQU	$3403
 
 
-    .MSFIRST
-    .ORG    $8000
+	.MSFIRST
+	.ORG    $8000
 info:
-    .FILL   $10, $2D
-    .TEXT   "-- WMS SYS 11 --"
-    .TEXT   "6821 PIA Tester "
-    .TEXT   "- Version 1.00 -"
-    .TEXT   "2019 Eric Conner"
-    .TEXT   " EricConner.net "
-    .FILL   $10, $2D
+	.FILL   $10, $2D
+	.TEXT   "-- WMS SYS 11 --"
+	.TEXT   "6821 PIA Tester "
+	.TEXT   "- Version 1.10 -"
+	.TEXT   "2019 Eric Conner"
+	.TEXT   " EricConner.net "
+	.FILL   $10, $2D
 
 
-main:
-		LDAA	#$00			;	Select PIA data direction register (bit2 = LOW)
-		STAA	sndSelOut_C
-		STAA	solB_C
-		STAA	lampDrive_C
-		STAA	lampStrobe_C
-		STAA	dispStrobe_C
-		STAA	dispSeg_C
-		STAA	dispDataA_C
-		STAA	dispDataB_C
-		STAA	switchInput_C
-		STAA	switchDrive_C
-		STAA	dispDataC_C
-		STAA	widgetIO_C
-
-		LDAA	#$FF			;	Set all PIA bits to outputs (LOW = Input, HIGH = Output)
-		STAA	sndSelOut
-		STAA	solB
-		STAA	lampDrive
-		STAA	lampStrobe
-		STAA	dispStrobe
-		STAA	dispSeg
-		STAA	dispDataA
-		STAA	dispDataB
-		STAA	switchInput
-		STAA	switchDrive
-		STAA	dispDataC
-		STAA	widgetIO
-		JMP		setFF
+init:
+	LDAA	#$00	; Select PIA data direction register
+	LDAB	#$FF	; Set all PIA bits to outputs (LOW = Input, HIGH = Output)
+	STAA	sndSelOut_C
+	STAB	sndSelOut
+	STAA	solB_C
+	STAB	solB
+	STAA	lampDrive_C
+	STAB	lampDrive
+	STAA	lampStrobe_C
+	STAB	lampStrobe
+	STAA	dispStrobe_C
+	STAB	dispStrobe
+	STAA	dispSeg_C
+	STAB	dispSeg
+	STAA	dispDataA_C
+	STAB	dispDataA
+	STAA	dispDataB_C
+	STAB	dispDataB
+	STAA	switchInput_C
+	STAB	switchInput
+	STAA	switchDrive_C
+	STAB	switchDrive
+	STAA	dispDataC_C
+	STAB	dispDataC
+	STAA	widgetIO_C
+	STAB	widgetIO
+	JMP		setFF
 
 
 setFF:
-		LDAA	#$04			;	Select PIA output register (bit2 = HIGH)
-		STAA	sndSelOut_C
-		STAA	solB_C
-		STAA	lampDrive_C
-		STAA	lampStrobe_C
-		STAA	dispStrobe_C
-		STAA	dispSeg_C
-		STAA	dispDataA_C
-		STAA	dispDataB_C
-		STAA	switchInput_C
-		STAA	switchDrive_C
-		STAA	dispDataC_C
-		STAA	widgetIO_C
-		
-		LDAA    #$FF			;	Output 0xFF to all PIAs and U28 latch
-		STAA    solA
-		STAA	sndSelOut
-		STAA	solB
-		STAA	lampDrive
-		STAA	lampStrobe
-		STAA	dispStrobe
-		STAA	dispSeg
-		STAA	dispDataA
-		STAA	dispDataB
-		STAA	switchInput
-		STAA	switchDrive
-		STAA	dispDataC
-		STAA	widgetIO
-
-		LDAA	#$30			;	Select PIA output register (bit1 = HIGH, bit0 = HIGH)
-		STAA	sndSelOut_C
-		STAA	solB_C
-		STAA	lampDrive_C
-		STAA	lampStrobe_C
-		STAA	dispStrobe_C
-		STAA	dispSeg_C
-		STAA	dispDataA_C
-		STAA	dispDataB_C
-		STAA	switchInput_C
-		STAA	switchDrive_C
-		STAA	dispDataC_C
-		STAA	widgetIO_C
-
-		JMP		delay1
+	LDAA	#$34	; Select PIA output register and CA2/CB2 = LOW
+	LDAB    #$FF	; Output 0xFF to all PIAs and U28 latch
+	STAB    solA
+	STAA	sndSelOut_C
+	STAB	sndSelOut
+	STAA	solB_C
+	STAB	solB
+	STAA	lampDrive_C
+	STAB	lampDrive
+	STAA	lampStrobe_C
+	STAB	lampStrobe
+	STAA	dispStrobe_C
+	STAB	dispStrobe
+	STAA	dispSeg_C
+	STAB	dispSeg
+	STAA	dispDataA_C
+	STAB	dispDataA
+	STAA	dispDataB_C
+	STAB	dispDataB
+	STAA	switchInput_C
+	STAB	switchInput
+	STAA	switchDrive_C
+	STAB	switchDrive
+	STAA	dispDataC_C
+	STAB	dispDataC
+	STAA	widgetIO_C
+	STAB	widgetIO
+	JMP		delay1
 
 
 set00:
-		LDAA	#$04			;	Select PIA output register (bit2 = HIGH)
-		STAA	sndSelOut_C
-		STAA	solB_C
-		STAA	lampDrive_C
-		STAA	lampStrobe_C
-		STAA	dispStrobe_C
-		STAA	dispSeg_C
-		STAA	dispDataA_C
-		STAA	dispDataB_C
-		STAA	switchInput_C
-		STAA	switchDrive_C
-		STAA	dispDataC_C
-		STAA	widgetIO_C
-		
-		LDAA    #$00			;	Output 0x00 to all PIAs and U28 latch
-		STAA    solA
-		STAA	sndSelOut
-		STAA	solB
-		STAA	lampDrive
-		STAA	lampStrobe
-		STAA	dispStrobe
-		STAA	dispSeg
-		STAA	dispDataA
-		STAA	dispDataB
-		STAA	switchInput
-		STAA	switchDrive
-		STAA	dispDataC
-		STAA	widgetIO
-
-		LDAA	#$30			;	Select PIA output register (bit1 = HIGH, bit0 = HIGH)
-		STAA	sndSelOut_C
-		STAA	solB_C
-		STAA	lampDrive_C
-		STAA	lampStrobe_C
-		STAA	dispStrobe_C
-		STAA	dispSeg_C
-		STAA	dispDataA_C
-		STAA	dispDataB_C
-		STAA	switchInput_C
-		STAA	switchDrive_C
-		STAA	dispDataC_C
-		STAA	widgetIO_C
-
-		JMP		delay2
+	LDAA	#$3C	; Select PIA output register and CA2/CB2 = HIGH
+	LDAB    #$00	; Output 0x00 to all PIAs and U28 latch
+	STAB    solA
+	STAA	sndSelOut_C
+	STAB	sndSelOut
+	STAA	solB_C
+	STAB	solB
+	STAA	lampDrive_C
+	STAB	lampDrive
+	STAA	lampStrobe_C
+	STAB	lampStrobe
+	STAA	dispStrobe_C
+	STAB	dispStrobe
+	STAA	dispSeg_C
+	STAB	dispSeg
+	STAA	dispDataA_C
+	STAB	dispDataA
+	STAA	dispDataB_C
+	STAB	dispDataB
+	STAA	switchInput_C
+	STAB	switchInput
+	STAA	switchDrive_C
+	STAB	switchDrive
+	STAA	dispDataC_C
+	STAB	dispDataC
+	STAA	widgetIO_C
+	STAB	widgetIO
+	JMP		delay2
 
 
 delay1:
-		LDAB	#$FF
+	LDAB	#$FF
 loadA1:
-		LDAA	#$FF
+	LDAA	#$FF
 sutractA1:
-		SUBA	#$01
-		CMPA	#$00
-		BGE		sutractB1
-		JMP		sutractA1
+	SUBA	#$01
+	CMPA	#$00
+	BGE		sutractB1
+	JMP		sutractA1
 sutractB1:
-		SUBB	#$01
-		CMPB	#$00
-		BGE		returnDelay1
-		JMP		loadA1
+	SUBB	#$01
+	CMPB	#$00
+	BGE		returnDelay1
+	JMP		loadA1
 returnDelay1:
-		JMP		set00
+	JMP		set00
 
 
 delay2:
-		LDAB	#$FF
+	LDAB	#$FF
 loadA2:
-		LDAA	#$FF
+	LDAA	#$FF
 sutractA2:
-		SUBA	#$01
-		CMPA	#$00
-		BGE		sutractB2
-		JMP		sutractA2
+	SUBA	#$01
+	CMPA	#$00
+	BGE		sutractB2
+	JMP		sutractA2
 sutractB2:
-		SUBB	#$01
-		CMPB	#$00
-		BGE		returnDelay2
-		JMP		loadA2
+	SUBB	#$01
+	CMPB	#$00
+	BGE		returnDelay2
+	JMP		loadA2
 returnDelay2:
-		JMP		setFF
+	JMP		setFF
 
 
 	.ORG	$FFFE
-	.WORD	main
+	.WORD	init
 	.END
