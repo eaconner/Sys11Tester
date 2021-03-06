@@ -33,7 +33,6 @@ widgetIO:		.EQU	$3402
 widgetIO_C:		.EQU	$3403
 
 
-	.MSFIRST
 	.ORG    $8000
 info:
 	.FILL   $10, $2D
